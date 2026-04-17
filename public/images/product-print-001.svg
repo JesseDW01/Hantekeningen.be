@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <rect fill="#c9c4bb" width="400" height="400"/>
+  <rect x="80" y="120" width="240" height="160" rx="4" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+  <line x1="80" y1="160" x2="320" y2="160" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="200" y="240" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#4a4a4a">Boek</text>
+</svg>

@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #faf9f6;
+  --color-ink: #1a1a1a;
+  --color-graphite: #4a4a4a;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Kalam', cursive, sans-serif;
+  background-color: #faf9f6;
+  color: #1a1a1a;
+}
+
+.paper-texture {
+  background-color: #faf9f6;
+}
+
+.paper-texture::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(74, 74, 74, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(74, 74, 74, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  z-index: -2;
+}
+
+.paper-texture::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.06;
+  z-index: -1;
+}
+
+/* Hand-drawn square border effect */
+.hand-drawn-border {
+  position: relative;
+  background: #faf9f6;
+}
+
+.hand-drawn-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px dashed #1a1a1a;
+  border-radius: 2px 4px 3px 5px;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* Ink button hover effect */
+.ink-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.25rem;
+  color: #1a1a1a;
+  background: transparent;
+  border: 2px solid #1a1a1a;
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  font-family: 'Kalam', cursive, sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ink-button:hover {
+  background: #1a1a1a;
+  color: #faf9f6;
+  border-radius: 15px 255px 15px 225px / 255px 15px 225px 15px;
+}
+
+.ink-button::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #1a1a1a;
+  transition: all 0.2s ease;
+  transform: translateX(-50%);
+}
+
+.ink-button:hover::after {
+  width: 80%;
+  background: #faf9f6;
+}

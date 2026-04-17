@@ -1,0 +1,173 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import PaperCard from '../components/PaperCard.astro';
+import InkButton from '../components/InkButton.astro';
+import { portfolioItems } from '../lib/data.ts';
+import '../styles/global.css';
+---
+
+<BaseLayout title="Hantekeningen.be" description="Handgetekende illustraties en ontwerpen met karakter">
+  <Navigation />
+
+  <main>
+    <!-- Hero -->
+    <section class="min-h-[70vh] flex flex-col items-center justify-center px-6 py-20 text-center">
+      <div class="max-w-3xl mx-auto">
+        <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold text-ink mb-6 leading-tight">
+          Hantekeningen
+        </h1>
+        <p class="text-xl sm:text-2xl md:text-3xl text-graphite mb-10 max-w-2xl mx-auto">
+          Handgetekende illustraties op vierkant papier — elk met een verhaal.
+        </p>
+
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a href="/winkel" class="ink-button text-lg px-8 py-3">
+            Ontdek de winkel
+          </a>
+          <a href="#portfolio" class="ink-button text-lg px-8 py-3">
+            Bekijk werk
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portfolio Highlight -->
+    <section id="portfolio" class="px-6 py-16">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl sm:text-4xl font-bold text-ink mb-4">Uitgelicht werk</h2>
+          <p class="text-lg text-graphite max-w-xl mx-auto">
+            Een selectie van recente tekeningen en illustraties.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {portfolioItems.map((item) => (
+            <PaperCard class="flex flex-col h-full">
+              <div class="aspect-square mb-4 overflow-hidden border-2 border-dashed border-ink/20 rounded-sm">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <p class="text-xs text-graphite uppercase tracking-wide mb-2">{item.category}</p>
+              <h3 class="text-xl font-bold text-ink mb-2">{item.title}</h3>
+              <p class="text-graphite text-sm leading-relaxed flex-grow">{item.description}</p>
+            </PaperCard>
+          ))}
+        </div>
+
+        <div class="text-center mt-10">
+          <a href="#" class="ink-button">
+            Bekijk alle werken
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="over" class="px-6 py-16">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl sm:text-4xl font-bold text-ink mb-4">Over de artiest</h2>
+        </div>
+
+        <PaperCard>
+          <div class="flex flex-col md:flex-row gap-8 items-center">
+            <div class="w-40 h-40 md:w-48 md:h-48 flex-shrink-0 border-2 border-dashed border-ink/30 rounded-full overflow-hidden">
+              <img
+                src="/favicon.svg"
+                alt="Portret van de artiest"
+                class="w-full h-full object-cover"
+              />
+            </div>
+
+            <div class="flex-1 text-center md:text-left">
+              <p class="text-lg text-graphite leading-relaxed mb-4">
+                Achter Hantekeningen zit een passie voor het ambachtelijke karakter van inkt op papier.
+                Elk ontwerp start met een potloodschets en groeit langzaam uit tot een uniek werk
+                dat emotie en verhaal combineert.
+              </p>
+              <p class="text-lg text-graphite leading-relaxed mb-4">
+                De stijl is minimalistisch maar expressief, geïnspireerd door grafische romans,
+                architectuur en de kleine momenten des levens. De voorkeur gaat uit naar
+                zwart-wit tekeningen op vierkant formaat — een eerbetoon aan de symmetrie
+                en het ambacht van het traditionele schetsboek.
+              </p>
+              <p class="text-lg text-graphite leading-relaxed">
+                Wil je een origineel werk bestellen of een samenwerking bespreken?
+                Neem gerust contact op via het formulier hieronder.
+              </p>
+            </div>
+          </div>
+        </PaperCard>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="px-6 py-16">
+      <div class="max-w-2xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl sm:text-4xl font-bold text-ink mb-4">Contact</h2>
+          <p class="text-lg text-graphite">
+            Heb je een vraag of wil je iets bestellen? Stuur een berichtje.
+          </p>
+        </div>
+
+        <PaperCard>
+          <form name="form-name" method="POST" data-netlify="true" class="space-y-6">
+            <input type="hidden" name="form-name" value="form-name" />
+
+            <div>
+              <label for="naam" class="block text-ink font-bold mb-2">Naam</label>
+              <input
+                type="text"
+                id="naam"
+                name="naam"
+                required
+                class="w-full px-4 py-3 bg-paper border-2 border-dashed border-ink/40 rounded-sm text-ink placeholder-graphite/60 focus:outline-none focus:border-ink"
+                placeholder="Jouw naam"
+              />
+            </div>
+
+            <div>
+              <label for="email" class="block text-ink font-bold mb-2">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="w-full px-4 py-3 bg-paper border-2 border-dashed border-ink/40 rounded-sm text-ink placeholder-graphite/60 focus:outline-none focus:border-ink"
+                placeholder="jouw@email.nl"
+              />
+            </div>
+
+            <div>
+              <label for="bericht" class="block text-ink font-bold mb-2">Bericht</label>
+              <textarea
+                id="bericht"
+                name="bericht"
+                rows="5"
+                required
+                class="w-full px-4 py-3 bg-paper border-2 border-dashed border-ink/40 rounded-sm text-ink placeholder-graphite/60 focus:outline-none focus:border-ink resize-y"
+                placeholder="Waarmee kan ik je helpen?"
+              ></textarea>
+            </div>
+
+            <div class="text-center">
+              <InkButton type="submit" class="text-lg px-8 py-3">
+                Verstuur
+              </InkButton>
+            </div>
+          </form>
+        </PaperCard>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

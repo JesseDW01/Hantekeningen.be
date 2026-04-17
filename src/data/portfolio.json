@@ -1,0 +1,30 @@
+[
+  {
+    "id": "port-001",
+    "title": "De Laatste Trein",
+    "description": "Een graphic novel over afscheid, treinen en de weg die voor je ligt.",
+    "image": "/images/portfolio-001.svg",
+    "category": "Graphic Novel"
+  },
+  {
+    "id": "port-002",
+    "title": "Stad in de Mist",
+    "description": "Twelve ink drawings capturing the quiet mystery of a fog-covered city.",
+    "image": "/images/portfolio-002.svg",
+    "category": "Inkttekeningen"
+  },
+  {
+    "id": "port-003",
+    "title": "De Wachtkamer",
+    "description": "Een originele inkttekening over verstilde momenten en onzeker wachten.",
+    "image": "/images/portfolio-003.svg",
+    "category": "Origineel Werk"
+  },
+  {
+    "id": "port-004",
+    "title": "Nachtelijke Stad",
+    "description": "Een reeks zwart-wit tekeningen van een stad die nooit slaapt.",
+    "image": "/images/portfolio-004.svg",
+    "category": "Inkttekeningen"
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "dig-001",
+    "name": "De Laatste Trein — Digitaal",
+    "description": "Een korte graphic novel over afscheid nemen en verder reizen. Directe PDF-download na aankoop.",
+    "price": 899,
+    "currency": "EUR",
+    "image": "/images/product-dig-001.svg",
+    "type": "digital"
+  },
+  {
+    "id": "dig-002",
+    "name": "Stad in de Mist — Digitaal",
+    "description": "Een verzameling van 12 inkttekeningen over een mysterieuze stad. Te downloaden als PDF.",
+    "price": 599,
+    "currency": "EUR",
+    "image": "/images/product-dig-002.svg",
+    "type": "digital"
+  },
+  {
+    "id": "print-001",
+    "name": "De Laatste Trein — Gedrukt",
+    "description": "De graphic novel in een mooie, gelimiteerde paperback-editie. Gedrukt op gerecycled papier.",
+    "price": 1899,
+    "currency": "EUR",
+    "image": "/images/product-print-001.svg",
+    "type": "print",
+    "weight": 350
+  },
+  {
+    "id": "print-002",
+    "name": "Stad in de Mist — Gedrukt",
+    "description": "Een kunstboek met 12 paginagrote inkttekeningen en korte verhaaltjes.",
+    "price": 2499,
+    "currency": "EUR",
+    "image": "/images/product-print-002.svg",
+    "type": "print",
+    "weight": 520
+  },
+  {
+    "id": "art-001",
+    "name": "Originele Inkttekening — 'De Wachtkamer'",
+    "description": "Een unieke, handgetekende inkttekening op vierkant papier (21 x 21 cm).", 
+    "price": 4500,
+    "currency": "EUR",
+    "image": "/images/product-art-001.svg",
+    "type": "print",
+    "weight": 80
+  }
+]

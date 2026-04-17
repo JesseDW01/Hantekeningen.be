@@ -1,0 +1,47 @@
+---
+import PaperCard from './PaperCard.astro';
+import type { Product } from '../types/index';
+
+export interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+
+const formattedPrice = new Intl.NumberFormat('nl-NL', {
+  style: 'currency',
+  currency: product.currency,
+}).format(product.price / 100);
+
+const snipcartPrice = (product.price / 100).toFixed(2);
+---
+
+<PaperCard class="flex flex-col h-full">
+  <div class="aspect-square mb-4 overflow-hidden border-2 border-dashed border-ink/20 rounded-sm">
+    <img
+      src={product.image}
+      alt={product.name}
+      class="w-full h-full object-cover"
+      loading="lazy"
+    />
+  </div>
+
+  <h3 class="text-xl font-bold text-ink mb-2">{product.name}</h3>
+  <p class="text-lg text-ink font-semibold mb-3">{formattedPrice}</p>
+  <p class="text-graphite text-sm leading-relaxed flex-grow mb-6">{product.description}</p>
+
+  <button
+    class="ink-button w-full snipcart-add-item"
+    data-item-id={product.id}
+    data-item-name={product.name}
+    data-item-price={snipcartPrice}
+    data-item-url="https://hantekeningen.be/winkel"
+    data-item-description={product.description}
+    data-item-image={product.image}
+    data-item-currency={product.currency}
+    {...product.type === 'print' && product.weight ? { 'data-item-weight': product.weight } : {}}
+    {...product.type === 'digital' ? { 'data-item-file-guid': 'DIGITAL-PLACEHOLDER' } : {}}
+  >
+    In winkelmand
+  </button>
+</PaperCard>

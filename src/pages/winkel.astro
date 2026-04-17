@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { products } from '../lib/data.ts';
+import '../styles/global.css';
+---
+
+<BaseLayout title="Winkel | Hantekeningen.be" description="Ontdek digitale downloads, prints en originele inkttekeningen in de winkel.">
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://cdn.snipcart.com" />
+    <script is:inline async src="https://cdn.snipcart.com/themes/v3.0.31/default/snipcart.js"></script>
+    <link rel="stylesheet" href="https://cdn.snipcart.com/themes/v3.0.31/default/snipcart.css" />
+  </Fragment>
+
+  <div
+    hidden
+    id="snipcart"
+    data-api-key="Y2Y1YzA5ZjYtNTk3Yi00MzdhLWEyYWYtZjA4YzA1ZjA4YjM2NjM4NjM2MjI3NjY0NjEy"
+    data-config-lang="nl"
+    data-currency="eur"></div>
+
+  <Navigation />
+
+  <main class="px-6 py-16">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl sm:text-5xl font-bold text-ink mb-4">Winkel</h1>
+        <p class="text-lg text-graphite max-w-2xl mx-auto">
+          Hier vind je digitale downloads, gedrukte edities en af en toe een originele inkttekening.
+          Alles wordt met zorg gemaakt en verstuurd.
+        </p>
+      </div>
+
+      {products.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {products.map((product) => (
+            <ProductCard product={product} />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-20">
+          <p class="text-xl text-graphite mb-4">Er zijn momenteel geen producten beschikbaar.</p>
+          <p class="text-graphite">Kom binnenkort terug om te zien wat er nieuw is!</p>
+        </div>
+      )}
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

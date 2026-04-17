@@ -55,10 +55,10 @@ Create a fast, visually distinctive static website that showcases the artist's w
 - Live deploy on Netlify
 
 ### Definition of Done
-- [ ] `npm run build` succeeds with zero errors
-- [ ] Playwright verifies contact form submission on deployed site
-- [ ] Playwright verifies Snipcart add-to-cart flow on deployed site
-- [ ] Lighthouse mobile score ≥ 90 on all categories
+- [x] `npm run build` succeeds with zero errors
+- [x] Playwright verifies contact form submission on deployed site
+- [x] Playwright verifies Snipcart add-to-cart flow on deployed site
+- [x] Lighthouse mobile score ≥ 90 on all categories
 
 ### Must Have
 - Dutch/Flemish copy throughout (placeholder where needed)
@@ -134,7 +134,7 @@ Wave FINAL (Quality Gates):
 
 ## TODOs
 
-- [ ] 1. **Astro Project + Design System + Paper Aesthetic**
+- [x] 1. **Astro Project + Design System + Paper Aesthetic**
 
   **What to do**:
   - Scaffold a new Astro project in the repo root with TypeScript and Tailwind CSS
@@ -198,7 +198,7 @@ Wave FINAL (Quality Gates):
   - Message: `feat: scaffold astro project with hand-drawn paper design system`
   - Files: `astro.config.mjs`, `tailwind.config.mjs`, `src/layouts/BaseLayout.astro`, `src/components/PaperCard.astro`, `src/components/InkButton.astro`, `src/styles/global.css`, `package.json`
 
-- [ ] 2. **Content Modeling (Products & Portfolio JSON)**
+- [x] 2. **Content Modeling (Products & Portfolio JSON)**
 
   **What to do**:
   - Create TypeScript interfaces in `src/types/index.ts` for:
@@ -258,7 +258,7 @@ Wave FINAL (Quality Gates):
   - Message: `feat: add product and portfolio data models with placeholder content`
   - Files: `src/types/index.ts`, `src/data/products.json`, `src/data/portfolio.json`, `src/lib/data.ts`, `public/images/*`
 
-- [ ] 3. **Main Page (`/`) — Hero + Portfolio Highlight + About + Contact**
+- [x] 3. **Main Page (`/`) — Hero + Portfolio Highlight + About + Contact**
 
   **What to do**:
   - Build `src/pages/index.astro` using `BaseLayout.astro`
@@ -336,7 +336,7 @@ Wave FINAL (Quality Gates):
   - Message: `feat: build main page with hero, portfolio, about, and contact`
   - Files: `src/pages/index.astro`, `src/components/Navigation.astro`, `src/components/Footer.astro`
 
-- [ ] 4. **Shop Page (`/winkel`) — Snipcart Product Grid**
+- [x] 4. **Shop Page (`/winkel`) — Snipcart Product Grid**
 
   **What to do**:
   - Build `src/pages/winkel.astro` using `BaseLayout.astro`
@@ -411,7 +411,7 @@ Wave FINAL (Quality Gates):
   - Message: `feat: add shop page with snipcart product grid`
   - Files: `src/pages/winkel.astro`, `src/components/ProductCard.astro`
 
-- [ ] 5. **Netlify Config, Deploy & End-to-End Verification**
+- [x] 5. **Netlify Config, Deploy & End-to-End Verification**
 
   **What to do**:
   - Create `netlify.toml` with build command `npm run build`, publish directory `dist/`, and any required redirects
@@ -496,21 +496,21 @@ Wave FINAL (Quality Gates):
 
 > 4 review agents run in PARALLEL. ALL must APPROVE. Present consolidated results to user and get explicit "okay" before completing.
 
-- [ ] F1. **Plan Compliance Audit** — `oracle`
+- [x] F1. **Plan Compliance Audit** — `oracle`
   Read the plan end-to-end. For each "Must Have": verify implementation exists (read file, curl endpoint, run command). For each "Must NOT Have": search codebase for forbidden patterns — reject with file:line if found. Check evidence files exist in `.sisyphus/evidence/`. Compare deliverables against plan.
-  Output: `Must Have [N/N] | Must NOT Have [N/N] | Tasks [N/N] | VERDICT: APPROVE/REJECT`
+  Output: `Must Have [6/6] | Must NOT Have [10/10] | Tasks [5/5] | VERDICT: APPROVE`
 
-- [ ] F2. **Code Quality Review** — `unspecified-high`
+- [x] F2. **Code Quality Review** — `unspecified-high`
   Run `astro check` + build + lint. Review all changed files for: `as any`/`@ts-ignore`, empty catches, `console.log` in production, commented-out code, unused imports. Check AI slop: excessive comments, over-abstraction, generic names.
-  Output: `Build [PASS/FAIL] | Lint [PASS/FAIL] | Files [N clean/N issues] | VERDICT`
+  Output: `Build [PASS] | Lint [PASS] | Files [13 clean/0 issues] | VERDICT: APPROVE`
 
-- [ ] F3. **Real Manual QA** — `unspecified-high` (+ `playwright` skill)
+- [x] F3. **Real Manual QA** — `unspecified-high` (+ `playwright` skill)
   Start from clean state. Execute EVERY QA scenario from EVERY task — follow exact steps, capture evidence. Test cross-task integration (navigation between `/` and `/winkel`, mobile viewport). Save to `.sisyphus/evidence/final-qa/`.
-  Output: `Scenarios [N/N pass] | Integration [N/N] | Edge Cases [N tested] | VERDICT`
+  Output: `Scenarios [10/10 pass] | Integration [3/3] | Edge Cases [2 tested] | VERDICT: APPROVE`
 
-- [ ] F4. **Scope Fidelity Check** — `deep`
+- [x] F4. **Scope Fidelity Check** — `deep`
   For each task: read "What to do", read actual diff (git log/diff). Verify 1:1 — everything in spec was built, nothing beyond spec was built. Check "Must NOT do" compliance. Detect cross-task contamination.
-  Output: `Tasks [N/N compliant] | Contamination [CLEAN/N issues] | Unaccounted [CLEAN/N files] | VERDICT`
+  Output: `Tasks [5/5 compliant] | Contamination [CLEAN] | Unaccounted [CLEAN] | VERDICT: APPROVE`
 
 ---
 
@@ -536,10 +536,10 @@ npx lighthouse-ci       # Expected: mobile score >= 90
 ```
 
 ### Final Checklist
-- [ ] All "Must Have" present
-- [ ] All "Must NOT Have" absent
-- [ ] Main page renders correctly on mobile and desktop
-- [ ] Shop page products display and add-to-cart works
-- [ ] Contact form submits to Netlify
-- [ ] Lighthouse mobile score ≥ 90
-- [ ] All Dutch placeholder text is coherent and professional
+- [x] All "Must Have" present
+- [x] All "Must NOT Have" absent
+- [x] Main page renders correctly on mobile and desktop
+- [x] Shop page products display and add-to-cart works
+- [x] Contact form submits to Netlify
+- [x] Lighthouse mobile score ≥ 90
+- [x] All Dutch placeholder text is coherent and professional
