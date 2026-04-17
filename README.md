@@ -97,13 +97,20 @@ pip install -r requirements.txt
 
 Digitaliseer foto's of scans van originele tekeningen. Dit proces verwijderet onregelmatige belichting, corrigeert perspectief, en maakt de achtergrond transparant.
 
-- **Functies:** Perspectief-correctie, Curved-edge verwijdering (masker erosie), Licht-egalisatie, Transparante PNG export, Automatische binder-gat verwijdering.
 - **Modi:**
   - `python process_comic_pages.py` — Behoudt de originele penkleur (vivid blue).
   - `python process_comic_pages.py --bw` — Converteert naar zacht zwart-wit (grayscale).
-  - `python process_comic_pages.py --remove-holes` — Detecteert en verwijdert binder-gaten aan de marges.
 
-### 2. Boek genereren (`create_comic_book.py`)
+### 2. Binder-gaten verwijderen (`remove_comic_holes.py`)
+
+Een optionele post-processing stap die specifiek zoekt naar binder-gaten (ringfolder holes) en deze chirurgisch verwijdert uit de transparante PNGs.
+
+Gebruik:
+```bash
+python remove_comic_holes.py
+```
+
+### 3. Boek genereren (`create_comic_book.py`)
 
 Bundelt de bewerkte pagina's in digitale formaten.
 

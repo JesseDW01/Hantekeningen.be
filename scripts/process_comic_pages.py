@@ -24,66 +24,29 @@ def get_page_mask_and_corners(img):
     contours, _ = cv2.findContours(thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     contours = sorted(contours, key=cv2.contourArea, reverse=True)
     if not contours: return None, None
-    
     paper_cnt = contours[0]
+    
+    peri = cv2.arcLength(paper_cnt, True)
+    approx = cv2.approxPolyDP(paper_cnt, 0.01 * peri, True)
+    if len(approx) != 4:
+        rect = cv2.minAreaRect(paper_cnt)
+        approx = np.int0(cv2.boxPoints(rect))
+    
     mask = np.zeros(image.shape[:2], dtype=np.uint8)
     cv2.drawContours(mask, [paper_cnt], -1, 255, -1)
     
-    kernel = np.ones((5, 5), np.uint8)
-    mask = cv2.erode(mask, kernel, iterations=2)
-    
-    peri = cv2.arcLength(paper_cnt, True)
-    approx = cv2.approxPolyDP(paper_cnt, 0.02 * peri, True)
-    if len(approx) != 4:
-        rect = cv2.minAreaRect(paper_cnt)
-        box = cv2.boxPoints(rect)
-        approx = np.int0(box)
+    # Minimal 1px erosion for edge cleanup
+    kernel = np.ones((3, 3), np.uint8)
+    mask = cv2.erode(mask, kernel, iterations=1)
     
     full_mask = cv2.resize(mask, (img.shape[1], img.shape[0]))
-    full_corners = approx.reshape(-1, 2) * ratio
-    return full_mask, full_corners
+    return full_mask, approx.reshape(-1, 2) * ratio
 
-def remove_binder_holes(alpha_mask, gray_img):
-    """
-    Detects circular binder holes near the left or right margins 
-    and removes them from the alpha mask.
-    """
-    h, w = alpha_mask.shape
-    # Margin where we look for holes (20% of the page width on either side)
-    margin = int(w * 0.15)
-    
-    # We use a blurred version for better circle detection
-    blurred = cv2.medianBlur(gray_img, 5)
-    
-    # Hough Circle Transform
-    # Sensitivity (param2) and minDist are key here
-    # We look for circles with radius roughly 1% to 3% of the image width
-    min_r = int(w * 0.005)
-    max_r = int(w * 0.03)
-    
-    circles = cv2.HoughCircles(
-        blurred, cv2.HOUGH_GRADIENT, dp=1.2, minDist=min_r*4,
-        param1=50, param2=30, minRadius=min_r, maxRadius=max_r
-    )
-    
-    if circles is not None:
-        circles = np.uint16(np.around(circles))
-        for i in circles[0, :]:
-            cx, cy = i[0], i[1]
-            # Only remove if the circle is in the left or right margin
-            if cx < margin or cx > (w - margin):
-                # Draw a black circle on the alpha mask to erase the hole
-                # We draw it slightly larger (+5px) to ensure no artifacts remain
-                cv2.circle(alpha_mask, (cx, cy), i[2] + 5, 0, -1)
-    
-    return alpha_mask
-
-def process_image(img_path, output_dir, mode="color", clean_holes=False):
+def process_image(img_path, output_dir, mode="color"):
     img = cv2.imread(str(img_path))
     if img is None: return
 
     mask, pts = get_page_mask_and_corners(img)
-    
     if pts is not None and mask is not None:
         rect = order_points(pts)
         (tl, tr, br, bl) = rect
@@ -94,7 +57,6 @@ def process_image(img_path, output_dir, mode="color", clean_holes=False):
         
         dst = np.array([[0, 0], [width - 1, 0], [width - 1, height - 1], [0, height - 1]], dtype="float32")
         M = cv2.getPerspectiveTransform(rect, dst)
-        
         warped_img = cv2.warpPerspective(img, M, (width, height))
         warped_mask = cv2.warpPerspective(mask, M, (width, height))
         
@@ -102,7 +64,7 @@ def process_image(img_path, output_dir, mode="color", clean_holes=False):
         blur_gray = cv2.GaussianBlur(gray_warped, (99, 99), 0)
         blur_bgr = cv2.cvtColor(blur_gray, cv2.COLOR_GRAY2BGR).astype(np.float32) + 1e-6
         
-        # Color processing
+        # Color normalization
         processed_rgb = warped_img.astype(np.float32) * 255.0 / blur_bgr
         processed_rgb = 255.0 - ((255.0 - processed_rgb) * 1.15)
         processed_rgb = np.clip(processed_rgb, 0, 255).astype(np.uint8)
@@ -115,41 +77,30 @@ def process_image(img_path, output_dir, mode="color", clean_holes=False):
         norm_gray = gray_warped.astype(np.float32) * 255.0 / (blur_gray.astype(np.float32) + 1e-6)
         inv = 255.0 - norm_gray
         ink_alpha = np.clip(inv * 2.2, 0, 255).astype(np.uint8)
-        
         final_alpha = cv2.bitwise_and(ink_alpha, warped_mask)
-        
-        # --- OPTIONAL: HOLE REMOVAL ---
-        if clean_holes:
-            final_alpha = remove_binder_holes(final_alpha, gray_warped)
         
         b, g, r = cv2.split(processed_rgb)
         final_art = cv2.merge((b, g, r, final_alpha))
     else:
         final_art = img
 
-    output_file = output_dir / f"{img_path.stem}.png"
-    cv2.imwrite(str(output_file), final_art)
-    print("  [Done]")
+    cv2.imwrite(str(output_dir / f"{img_path.stem}.png"), final_art)
+    print(f"  [Done] {img_path.name}")
 
-def process_directory(input_dir, output_dir=None, mode="color", clean_holes=False):
+def process_directory(input_dir, output_dir=None, mode="color"):
     input_path = Path(input_dir)
     if not input_path.exists(): return
-    if output_dir is None: output_dir = input_path.parent / f"{input_path.name}_{mode}"
-    else: output_dir = Path(output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
+    out_dir = input_path.parent / f"{input_path.name}_processed" if output_dir is None else Path(output_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
     images = [f for f in input_path.iterdir() if f.suffix.lower() in {'.jpg', '.jpeg', '.png', '.webp'} and f.is_file()]
-    
-    print(f"Mode: {mode.upper()} | Clean Holes: {clean_holes}")
-    for count, img_path in enumerate(images, 1):
-        process_image(img_path, output_dir, mode=mode, clean_holes=clean_holes)
+    print(f"Target: {out_dir} | Mode: {mode.upper()}")
+    for img_path in images:
+        process_image(img_path, out_dir, mode=mode)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("input_folder", nargs="?", default=r"D:\GIT\Web\Hantekeningen.be\albums\Spooky & Sara")
     parser.add_argument("-o", "--output", type=str)
-    parser.add_argument("--bw", action="store_true", help="Process in Black & White instead of original Pen color")
-    parser.add_argument("--remove-holes", action="store_true", help="Attempt to auto-detect and remove binder/ringfolder holes")
-    
+    parser.add_argument("--bw", action="store_true")
     args = parser.parse_args()
-    mode = "bw" if args.bw else "color"
-    process_directory(args.input_folder, args.output, mode=mode, clean_holes=args.remove_holes)
+    process_directory(args.input_folder, args.output, mode="bw" if args.bw else "color")
