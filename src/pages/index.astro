@@ -13,7 +13,7 @@ import '../styles/global.css';
 
   <main>
     <!-- Hero -->
-    <section class="min-h-[70vh] flex flex-col items-center justify-center px-6 py-20 text-center">
+    <section class="min-h-[90vh] flex flex-col items-center justify-center px-6 py-20 text-center">
       <div class="max-w-3xl mx-auto">
         <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold text-ink mb-6 leading-tight">
           Hantekeningen
@@ -26,20 +26,21 @@ import '../styles/global.css';
           <a href="/winkel" class="ink-button text-lg px-8 py-3">
             Ontdek de winkel
           </a>
-          <a href="#portfolio" class="ink-button text-lg px-8 py-3">
+          <a href="#albums" class="ink-button text-lg px-8 py-3">
             Bekijk werk
           </a>
         </div>
       </div>
     </section>
 
-    <!-- Portfolio Highlight -->
-    <section id="portfolio" class="px-6 py-16">
-      <div class="max-w-5xl mx-auto">
+    <!-- Albums & Shop -->
+    <section id="albums" class="py-16">
+      <div class="bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)] p-8 md:p-12 lg:p-16 transform rotate-[-0.3deg]"
+           style="border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;">
         <div class="text-center mb-12">
-          <h2 class="text-3xl sm:text-4xl font-bold text-ink mb-4">Uitgelicht werk</h2>
+          <h2 class="text-3xl sm:text-4xl font-bold text-ink mb-4">Albums</h2>
           <p class="text-lg text-graphite max-w-xl mx-auto">
-            Een selectie van recente tekeningen en illustraties.
+            Een selectie van recente tekeningen, graphic novels en illustraties.
           </p>
         </div>
 
@@ -61,56 +62,18 @@ import '../styles/global.css';
           ))}
         </div>
 
-        <div class="text-center mt-10">
-          <a href="#" class="ink-button">
-            Bekijk alle werken
+        <div class="text-center mt-12">
+          <a href="/winkel" class="ink-button text-lg px-8 py-3">
+            Ga naar de winkel →
           </a>
         </div>
       </div>
     </section>
 
-    <!-- About -->
-    <section id="over" class="px-6 py-16">
-      <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl sm:text-4xl font-bold text-ink mb-4">Over de artiest</h2>
-        </div>
-
-        <PaperCard>
-          <div class="flex flex-col md:flex-row gap-8 items-center">
-            <div class="w-40 h-40 md:w-48 md:h-48 flex-shrink-0 border-2 border-dashed border-ink/30 rounded-full overflow-hidden">
-              <img
-                src="/favicon.svg"
-                alt="Portret van de artiest"
-                class="w-full h-full object-cover"
-              />
-            </div>
-
-            <div class="flex-1 text-center md:text-left">
-              <p class="text-lg text-graphite leading-relaxed mb-4">
-                Achter Hantekeningen zit een passie voor het ambachtelijke karakter van inkt op papier.
-                Elk ontwerp start met een potloodschets en groeit langzaam uit tot een uniek werk
-                dat emotie en verhaal combineert.
-              </p>
-              <p class="text-lg text-graphite leading-relaxed mb-4">
-                De stijl is minimalistisch maar expressief, geïnspireerd door grafische romans,
-                architectuur en de kleine momenten des levens. De voorkeur gaat uit naar
-                zwart-wit tekeningen op vierkant formaat — een eerbetoon aan de symmetrie
-                en het ambacht van het traditionele schetsboek.
-              </p>
-              <p class="text-lg text-graphite leading-relaxed">
-                Wil je een origineel werk bestellen of een samenwerking bespreken?
-                Neem gerust contact op via het formulier hieronder.
-              </p>
-            </div>
-          </div>
-        </PaperCard>
-      </div>
-    </section>
-
     <!-- Contact -->
-    <section id="contact" class="px-6 py-16">
-      <div class="max-w-2xl mx-auto">
+    <section id="contact" class="py-16">
+      <div class="bg-white shadow-[0_4px_24px_rgba(0,0,0,0.08)] p-8 md:p-12 lg:p-16 transform rotate-[0.3deg]"
+           style="border-radius: 15px 255px 15px 225px / 255px 15px 225px 15px;">
         <div class="text-center mb-12">
           <h2 class="text-3xl sm:text-4xl font-bold text-ink mb-4">Contact</h2>
           <p class="text-lg text-graphite">
@@ -118,7 +81,7 @@ import '../styles/global.css';
           </p>
         </div>
 
-        <PaperCard>
+        <div class="max-w-2xl mx-auto">
           <form name="form-name" method="POST" data-netlify="true" class="space-y-6">
             <input type="hidden" name="form-name" value="form-name" />
 
@@ -164,7 +127,7 @@ import '../styles/global.css';
               </InkButton>
             </div>
           </form>
-        </PaperCard>
+        </div>
       </div>
     </section>
   </main>
