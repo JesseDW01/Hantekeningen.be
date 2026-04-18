@@ -13,6 +13,10 @@ git lfs track "*_print.pdf"
 Write-Host "Tracking EPUBs..." -ForegroundColor Yellow
 git lfs track "*.epub"
 
+# Track ZIP archives
+Write-Host "Tracking ZIP archives..." -ForegroundColor Yellow
+git lfs track "*.zip"
+
 # Track Processed PNG images
 # These are the high-quality masters with transparency.
 Write-Host "Tracking Processed Image Masters..." -ForegroundColor Yellow
