@@ -122,13 +122,31 @@ def process_image(img_path, output_dir, templates, debug=False):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--debug", action="store_true")
-    parser.add_argument("input_folder", nargs="?", default=r"D:\GIT\Web\Hantekeningen.be\albums\Spooky & Sara_processed")
+    parser.add_argument("input_folder", nargs="?", default=None)
     args = parser.parse_args()
-    input_path = Path(args.input_folder)
+    
+    albums_root = Path(r"D:\GIT\Web\Hantekeningen.be\albums")
     templates = get_hole_templates()
     if not templates: return
-    images = sorted([f for f in input_path.iterdir() if f.suffix.lower() == '.png' and not f.name.startswith('verify_')])
-    print(f"Double-Sided Scan with Mirrored Vision | Samples: {len(templates)}")
-    for path in images: process_image(path, input_path, templates, args.debug)
+    
+    if args.input_folder:
+        target_folders = [Path(args.input_folder)]
+    else:
+        print(f"No input folder specified. Scanning {albums_root} for processed albums...")
+        target_folders = sorted([f for f in albums_root.iterdir() if f.is_dir() and f.name.endswith("_processed")])
+
+    for input_path in target_folders:
+        if not input_path.exists():
+            print(f"Skipping: {input_path} (not found)")
+            continue
+            
+        images = sorted([f for f in input_path.iterdir() if f.suffix.lower() == '.png' and not f.name.startswith('verify_')])
+        if not images:
+            continue
+            
+        print(f"\n--- Processing: {input_path.name} ---")
+        print(f"Samples: {len(templates)} | Pages: {len(images)}")
+        for path in images: 
+            process_image(path, input_path, templates, args.debug)
 
 if __name__ == "__main__": main()

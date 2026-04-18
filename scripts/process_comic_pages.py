@@ -30,7 +30,7 @@ def get_page_mask_and_corners(img):
     approx = cv2.approxPolyDP(paper_cnt, 0.01 * peri, True)
     if len(approx) != 4:
         rect = cv2.minAreaRect(paper_cnt)
-        approx = np.int0(cv2.boxPoints(rect))
+        approx = np.intp(cv2.boxPoints(rect))
     
     mask = np.zeros(image.shape[:2], dtype=np.uint8)
     cv2.drawContours(mask, [paper_cnt], -1, 255, -1)
@@ -99,8 +99,17 @@ def process_directory(input_dir, output_dir=None, mode="color"):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("input_folder", nargs="?", default=r"D:\GIT\Web\Hantekeningen.be\albums\Spooky & Sara")
+    parser.add_argument("input_folder", nargs="?", default=None, help="Folder to process. Defaults to all folders in 'albums/'")
     parser.add_argument("-o", "--output", type=str)
     parser.add_argument("--bw", action="store_true")
     args = parser.parse_args()
-    process_directory(args.input_folder, args.output, mode="bw" if args.bw else "color")
+
+    albums_root = Path(r"D:\GIT\Web\Hantekeningen.be\albums")
+    
+    if args.input_folder:
+        process_directory(args.input_folder, args.output, mode="bw" if args.bw else "color")
+    else:
+        print(f"No input folder specified. Scanning {albums_root}...")
+        for folder in sorted(albums_root.iterdir()):
+            if folder.is_dir() and folder.name != "holes" and not folder.name.endswith("_processed"):
+                process_directory(folder, args.output, mode="bw" if args.bw else "color")

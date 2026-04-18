@@ -9,7 +9,7 @@ def create_pdf(image_paths, output_pdf_path):
     print(f"Creating High-Res Print PDF: {output_pdf_path}...")
     with open(output_pdf_path, "wb") as f:
         f.write(img2pdf.convert([str(p) for p in image_paths]))
-    print("✅ Print PDF Created successfully.")
+    print("[OK] Print PDF Created successfully.")
 
 def create_web_pdf(image_paths, output_pdf_path, max_height=1600, quality=75):
     print(f"Creating Compressed Web PDF: {output_pdf_path}...")
@@ -31,7 +31,7 @@ def create_web_pdf(image_paths, output_pdf_path, max_height=1600, quality=75):
         quality=quality,
         optimize=True
     )
-    print("✅ Web PDF Created successfully.")
+    print("[OK] Web PDF Created successfully.")
 
 def create_epub(image_paths, output_epub_path, title="Comic Book"):
     print(f"Creating EPUB: {output_epub_path}...")
@@ -57,21 +57,11 @@ def create_epub(image_paths, output_epub_path, title="Comic Book"):
     book.add_item(epub.EpubNav())
     book.spine = ['nav'] + chapters
     epub.write_epub(output_epub_path, book, {})
-    print("✅ EPUB Created successfully.")
+    print("[OK] EPUB Created successfully.")
 
-def main():
-    parser = argparse.ArgumentParser(description="Convert a folder of images to PDF and EPUB.")
-    parser.add_argument("input_folder", nargs="?", default=r"D:\GIT\Web\Hantekeningen.be\albums\Spooky & Sara_processed")
-    parser.add_argument("-t", "--title", type=str, default="Spooky & Sara")
-    parser.add_argument("--web", action="store_true", help="Generate only the web-optimized PDF")
-    parser.add_argument("--print", action="store_true", help="Generate the heavy high-res print PDF")
-    parser.add_argument("--epub", action="store_true", help="Generate the EPUB file")
-    
-    args = parser.parse_args()
-    input_path = Path(args.input_folder)
-    
+def process_single_album(input_path, args):
     if not input_path.exists():
-        print(f"Error: Folder {args.input_folder} not found.")
+        print(f"Error: Folder {input_path} not found.")
         return
 
     extensions = {'.jpg', '.jpeg', '.png', '.webp', '.tiff'}
@@ -81,27 +71,44 @@ def main():
     )
 
     if not image_paths:
-        print("No images found.")
+        print(f"No images found in {input_path.name}. Skipping.")
         return
 
-    base_name = input_path.name.split('_')[0] # Safer base name extraction
+    print(f"\n--- Bundling Album: {input_path.name} ---")
+    base_name = input_path.name.split('_')[0] 
+    title = args.title if args.title != "Spooky & Sara" else base_name
     
-    # If no specific flags are passed, we default to doing EVERYTHING
     do_all = not (args.web or args.print or args.epub)
 
-    # 1. Web PDF (Fastest)
     if args.web or do_all:
         create_web_pdf(image_paths, input_path.parent / f"{base_name}_web.pdf")
     
-    # 2. EPUB (Fast)
     if args.epub or do_all:
-        create_epub(image_paths, input_path.parent / f"{base_name}.epub", title=args.title)
+        create_epub(image_paths, input_path.parent / f"{base_name}.epub", title=title)
     
-    # 3. Print PDF (Slowest)
     if args.print or do_all:
         create_pdf(image_paths, input_path.parent / f"{base_name}_print.pdf")
 
-    print(f"\n🎉 Bundling complete!")
+def main():
+    parser = argparse.ArgumentParser(description="Convert a folder of images to PDF and EPUB.")
+    parser.add_argument("input_folder", nargs="?", default=None)
+    parser.add_argument("-t", "--title", type=str, default="Spooky & Sara")
+    parser.add_argument("--web", action="store_true", help="Generate only the web-optimized PDF")
+    parser.add_argument("--print", action="store_true", help="Generate the heavy high-res print PDF")
+    parser.add_argument("--epub", action="store_true", help="Generate the EPUB file")
+    
+    args = parser.parse_args()
+    albums_root = Path(r"D:\GIT\Web\Hantekeningen.be\albums")
+    
+    if args.input_folder:
+        process_single_album(Path(args.input_folder), args)
+    else:
+        print(f"No input folder specified. Scanning {albums_root} for processed albums...")
+        for folder in sorted(albums_root.iterdir()):
+            if folder.is_dir() and folder.name.endswith("_processed"):
+                process_single_album(folder, args)
+
+    print("\n[Done] All bundling tasks complete!")
 
 if __name__ == "__main__":
     main()
