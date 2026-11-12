@@ -1,3 +1,12 @@
 [build]
   command = "npm run build"
   publish = "dist/"
+
+# mail.hantekeningen.be -> Netim webmail (same provider as the other .be sites).
+# Requires mail.hantekeningen.be as a Netlify domain alias + a DNS record
+# pointing at Netlify.
+[[redirects]]
+  from = "https://mail.hantekeningen.be/*"
+  to = "https://mail1.netim.hosting/"
+  status = 301
+  force = true
